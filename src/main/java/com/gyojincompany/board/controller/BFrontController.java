@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.gyojincompany.board.command.BContentviewCommand;
 import com.gyojincompany.board.command.BListCommand;
+import com.gyojincompany.board.command.BModifyCommand;
 import com.gyojincompany.board.command.BWriteCommand;
 import com.gyojincompany.board.dao.BDao;
 
@@ -77,10 +78,16 @@ public class BFrontController extends HttpServlet {
 				BContentviewCommand comm = new BContentviewCommand();
 				comm.viewExcute(request, response);
 				
-				view = "content_view.jsp";
-				
-		}
-		
+				view = "content_view.jsp";				
+		} else if (command.equals("/modify.do")) {
+			
+			request.setCharacterEncoding("utf-8");//한글 깨짐 방지
+			
+			BModifyCommand comm = new BModifyCommand();
+			comm.modifyExcute(request, response);
+			
+			view = "list.do";				
+	}	
 		
 		
 		
