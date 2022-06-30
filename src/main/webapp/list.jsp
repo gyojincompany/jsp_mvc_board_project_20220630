@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +8,30 @@
 <title>게시판 글 목록</title>
 </head>
 <body>
-여기는 글목록 보기 list.jsp 입니다.
+<h2>게시판 글 리스트</h2>
+<hr>
+<table border="1" cellpadding="0" cellspacing="0">
+	<tr bgcolor="pink" align="center">
+		<td>번호</td>
+		<td width="400">제목</td>
+		<td>글쓴이</td>
+		<td>등록일</td>
+		<td>조회수</td>
+	</tr>
+	<c:forEach items="${list}" var="bdto">
+		<tr>
+			<td align="center">${bdto.bid}</td>
+			<td>${bdto.btitle}</td>
+			<td align="center">${bdto.bname}</td>
+			<td align="center">${bdto.bdate}</td>
+			<td align="center">${bdto.bhit}</td>
+		</tr>
+	</c:forEach>
+	<tr align="right">
+		<td colspan="5">
+			<input type="button" value="글쓰기" onclick="location.href='write_view.do'">
+		</td>
+	</tr>
+</table>
 </body>
 </html>

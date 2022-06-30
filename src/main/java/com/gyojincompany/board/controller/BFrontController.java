@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.gyojincompany.board.command.BListCommand;
 import com.gyojincompany.board.command.BWriteCommand;
 import com.gyojincompany.board.dao.BDao;
 
@@ -56,7 +57,7 @@ public class BFrontController extends HttpServlet {
 			view = "write_view.jsp";
 		} else if (command.equals("/write.do")) {
 			//글쓰기 명령이 실행
-			request.setCharacterEncoding("utf-8");
+			request.setCharacterEncoding("utf-8");//한글 깨짐 방지
 			
 			BWriteCommand comm = new BWriteCommand();
 			comm.writeExcute(request, response);
@@ -65,7 +66,11 @@ public class BFrontController extends HttpServlet {
 		} else if (command.equals("/list.do")) {
 			//글 리스트 불러오기 명령이 실행
 			
+			BListCommand comm = new BListCommand();
+			comm.listExcute(request, response);
+			
 			view = "list.jsp";
+//			response.sendRedirect(view);// 데이터가 셋팅된 request 객체를 사용하지 못함
 		}
 		
 		

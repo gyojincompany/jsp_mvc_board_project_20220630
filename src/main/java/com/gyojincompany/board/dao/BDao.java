@@ -2,10 +2,15 @@ package com.gyojincompany.board.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
+
+import com.gyojincompany.board.dto.BDto;
 
 public class BDao {
 
@@ -35,7 +40,7 @@ public class BDao {
 			pstmt.setString(2, btitle);
 			pstmt.setString(3, bcontent);
 			
-			pstmt.executeUpdate();
+			pstmt.executeUpdate();//sql 실행
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -54,5 +59,50 @@ public class BDao {
 		}
 	}
 	
+	public ArrayList<BDto> list() {		
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<BDto> bdtos = new ArrayList<BDto>();
+		
+		String sql = "SELECT * FROM mvc_board ORDER BY bid DESC";
+		
+		try {			
+			conn = datasource.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();//sql 실행
+			
+			while(rs.next()) {
+				int bid = rs.getInt("bid");
+				String bname = rs.getString("bname");
+				String btitle = rs.getString("btitle");
+				String bcontent = rs.getString("bcontent");
+				Timestamp bdate = rs.getTimestamp("bdate");
+				int bhit = rs.getInt("bhit");
+				
+				BDto bdto = new BDto(bid, bname, btitle, bcontent, bhit, bdate);
+				bdtos.add(bdto);
+			}			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return bdtos;
+		
+	}
 	
 }
