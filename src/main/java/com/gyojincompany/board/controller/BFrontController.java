@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.gyojincompany.board.command.BContentviewCommand;
 import com.gyojincompany.board.command.BListCommand;
 import com.gyojincompany.board.command.BWriteCommand;
 import com.gyojincompany.board.dao.BDao;
@@ -71,7 +72,16 @@ public class BFrontController extends HttpServlet {
 			
 			view = "list.jsp";
 //			response.sendRedirect(view);// 데이터가 셋팅된 request 객체를 사용하지 못함
+		} else if (command.equals("/content_view.do")) {
+				
+				BContentviewCommand comm = new BContentviewCommand();
+				comm.viewExcute(request, response);
+				
+				view = "content_view.jsp";
+				
 		}
+		
+		
 		
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(view);

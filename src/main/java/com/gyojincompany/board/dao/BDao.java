@@ -89,6 +89,9 @@ public class BDao {
 			e.printStackTrace();
 		}finally {
 			try {
+				if(rs != null) {
+					rs.close();
+				}
 				if(pstmt != null) {
 					pstmt.close();
 				}
@@ -101,8 +104,56 @@ public class BDao {
 			}
 		}
 		
-		return bdtos;
+		return bdtos;		
+	}
+	
+	public BDto contentView(String boardid) {		
 		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		BDto bdto = null;
+				
+		String sql = "SELECT * FROM mvc_board WHERE bid = ?";
+		
+		try {			
+			conn = datasource.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, boardid);
+			
+			rs = pstmt.executeQuery();//sql 실행
+			
+			while(rs.next()) {
+				int bid = rs.getInt("bid");
+				String bname = rs.getString("bname");
+				String btitle = rs.getString("btitle");
+				String bcontent = rs.getString("bcontent");
+				Timestamp bdate = rs.getTimestamp("bdate");
+				int bhit = rs.getInt("bhit");
+				
+				bdto = new BDto(bid, bname, btitle, bcontent, bhit, bdate);
+			}			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return bdto;		
 	}
 	
 }
