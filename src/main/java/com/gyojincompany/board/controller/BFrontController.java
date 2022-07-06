@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.gyojincompany.board.command.BContentviewCommand;
+import com.gyojincompany.board.command.BDeleteCommand;
 import com.gyojincompany.board.command.BListCommand;
 import com.gyojincompany.board.command.BModifyCommand;
 import com.gyojincompany.board.command.BWriteCommand;
@@ -87,7 +88,13 @@ public class BFrontController extends HttpServlet {
 			comm.modifyExcute(request, response);
 			
 			view = "list.do";				
-	}	
+		} else if (command.equals("/delete.do")) {
+			
+			BDeleteCommand comm = new BDeleteCommand();
+			comm.deleteExcute(request, response);
+			
+			view = "list.do";				
+		}
 		
 		
 		

@@ -107,7 +107,9 @@ public class BDao {
 		return bdtos;		
 	}
 	
-	public BDto contentView(String boardid) {		
+	public BDto contentView(String boardid) {	
+		
+		upHit(boardid);//조회수 함수 호출
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -169,7 +171,7 @@ public class BDao {
 			pstmt.setString(1, bname);
 			pstmt.setString(2, btitle);
 			pstmt.setString(3, bcontent);
-			pstmt.setString(4, bid);
+			pstmt.setInt(4, Integer.parseInt(bid));
 			
 			pstmt.executeUpdate();//sql 실행
 			
@@ -188,6 +190,69 @@ public class BDao {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void delete(String bid) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			String sql = "DELETE FROM mvc_board WHERE bid=?";
+			conn = datasource.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, bid);			
+			
+			pstmt.executeUpdate();//sql 실행
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void upHit(String bid) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			String sql = "UPDATE mvc_board SET bhit=bhit+1 WHERE bid=?";
+			conn = datasource.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, bid);			
+			
+			pstmt.executeUpdate();//sql 실행
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 	
 	
