@@ -9,10 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.gyojincompany.board.command.BCommand;
 import com.gyojincompany.board.command.BContentviewCommand;
 import com.gyojincompany.board.command.BDeleteCommand;
 import com.gyojincompany.board.command.BListCommand;
 import com.gyojincompany.board.command.BModifyCommand;
+import com.gyojincompany.board.command.BReplyCommand;
 import com.gyojincompany.board.command.BWriteCommand;
 import com.gyojincompany.board.dao.BDao;
 
@@ -54,6 +56,7 @@ public class BFrontController extends HttpServlet {
 		String command = uri.substring(conPath.length());//실제 요청 주소 분기(command 분기)
 		
 		String view =null;
+		BCommand comm = null;
 		
 		if(command.equals("/write_view.do")) {			
 			
@@ -62,39 +65,39 @@ public class BFrontController extends HttpServlet {
 			//글쓰기 명령이 실행
 			request.setCharacterEncoding("utf-8");//한글 깨짐 방지
 			
-			BWriteCommand comm = new BWriteCommand();
-			comm.writeExcute(request, response);
+			comm = new BWriteCommand();
+			comm.excute(request, response);
 			
 			view = "list.do";
 		} else if (command.equals("/list.do")) {
 			//글 리스트 불러오기 명령이 실행
 			
-			BListCommand comm = new BListCommand();
-			comm.listExcute(request, response);
+			comm = new BListCommand();
+			comm.excute(request, response);
 			
 			view = "list.jsp";
 //			response.sendRedirect(view);// 데이터가 셋팅된 request 객체를 사용하지 못함
 		} else if (command.equals("/content_view.do")) {
 				
-				BContentviewCommand comm = new BContentviewCommand();
-				comm.viewExcute(request, response);
+			comm = new BContentviewCommand();
+			comm.excute(request, response);
 				
 				view = "content_view.jsp";				
 		} else if (command.equals("/modify.do")) {
 			
 			request.setCharacterEncoding("utf-8");//한글 깨짐 방지
 			
-			BModifyCommand comm = new BModifyCommand();
-			comm.modifyExcute(request, response);
+			comm = new BModifyCommand();
+			comm.excute(request, response);
 			
 			view = "list.do";				
 		} else if (command.equals("/delete.do")) {
 			
-			BDeleteCommand comm = new BDeleteCommand();
-			comm.deleteExcute(request, response);
+			comm = new BDeleteCommand();
+			comm.excute(request, response);
 			
 			view = "list.do";				
-		}
+		} 
 		
 		
 		
